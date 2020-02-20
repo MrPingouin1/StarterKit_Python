@@ -1,53 +1,35 @@
-from book import Book
-from library import Library
-import csv
+from model import Model
 
-dataFile = 'ressources/b_read_on.txt'
-output = 'target/out.txt'
+inputDirectory = 'ressources/'
+outputFile = 'target/'
 
-booksList = []
-libraryList = []
-maxDays = 0
+inputFiles = []
+outputFiles = []
 
-# read ---------------------------------------------------------------------------------
-with open(dataFile, 'r') as file:
-    tempoReader = csv.reader(file, delimiter=' ')
-    reader = list(tempoReader)
+inputFiles.append(inputDirectory + 'a_example.txt')
+outputFiles.append(outputFile + 'A.txt')
 
-    nbBooksTotal = int(reader[0][0])
-    nbLibrary = int(reader[0][1])
-    maxDays = int(reader[0][2])
+inputFiles.append(inputDirectory + 'b_read_on.txt')
+outputFiles.append(outputFile + 'B.txt')
 
-    i = 0
-    for row in reader[1]:
-        i = i +1
-        booksList.append(Book(i,row))
-    
-    idLib=0
-    for j in range(2, len(reader)-1, 2):
-        print(reader[j])    
-        tempoLibrary = Library(idLib, reader[j][1], reader[j][2])
-        idLib += 1
-        nbBooksLib = int(reader[j][0])
-        for k in range(nbBooksLib-1):
-            tempoLibrary.addBook(booksList[int(reader[j+1][k])])
-        libraryList.append(tempoLibrary)
+inputFiles.append(inputDirectory + 'c_incunabula.txt')
+outputFiles.append(outputFile + 'C.txt')
 
-# print (libraryList[-1].listBooks[-1].id)
+inputFiles.append(inputDirectory + 'd_tough_choices.txt')
+outputFiles.append(outputFile + 'D.txt')
 
-# scan ------------------------------------------------------------------------------------
-listLibraryScan = []
+inputFiles.append(inputDirectory + 'e_so_many_books.txt')
+outputFiles.append(outputFile + 'E.txt')
 
-# write -----------------------------------------------------------------------------------
-with open(dataFile, 'w') as file:
-    file.write(len(listLibraryScan) + '\n\r')
+inputFiles.append(inputDirectory + 'f_libraries_of_the_world.txt')
+outputFiles.append(outputFile + 'F.txt')
 
-    for library in listLibraryScan:
-        file.write(library.id + ' ' + len(library.bookScanned) + '\n\r')
-        for book in library.bookScanned:
-            file.write(book.id + ' ')
-        
-        file.write('\n\r')
+for i in range(len(inputFiles)):
+    print(inputFiles[i])
+    myGame = Model()
+    myGame.loadData(inputFiles[i])
+    myGame.goodOne()
+    # myGame.printModel()
+    myGame.outSolution(outputFiles[i])
 
-# end -------------------------------------------------------------------------------------
 print('ended')
